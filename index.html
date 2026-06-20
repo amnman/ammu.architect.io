@@ -123,26 +123,39 @@
   }
   .film-frame.show{ opacity:1; transform:scale(1); }
   .film-photo{ flex:1; overflow:hidden; position:relative; background:#ddd; }
-  .film-photo img, .film-photo video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .film-photo img, .film-photo video{ width:100%; height:110%; object-fit:cover; display:block; }
   .film-caption{ font-family:'Caveat',cursive; font-size:.6rem; text-align:center; color:#444; padding:2px 2px 4px; background:var(--film-frame); }
   .card-frame{
-    position:absolute; inset:0; border-radius:8px;
-    background:linear-gradient(160deg,#fff0e0,#ffe1ea);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
-    padding:8%; opacity:0; transform:scale(.85); transition:opacity .5s ease, transform .5s ease;
-  }
-  .card-frame.show{ opacity:1; transform:scale(1); }
-  .card-frame h3{ font-family:'Playfair Display',serif; font-style:italic; color:var(--rose); margin:0 0 4px; font-size:.7rem; }
-  .card-frame p{ font-family:'Caveat',cursive; font-size:.6rem; color:#5a4444; margin:0; line-height:1.25; }
+  position:absolute; inset:0; border-radius:8px;
+  overflow:hidden;
+  opacity:0; transform:scale(.85); transition:opacity .5s ease, transform .5s ease;
+}
+.card-frame.show{ opacity:1; transform:scale(1); }
+.card-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
 
   .controls-col{ position:absolute; left:79%; top:7.5%; width:17%; height:75%; display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:10%; }
   .ctrl-btn{
-    border:none; border-radius:9px; padding:9% 3%;
-    font-family:'Quicksand',sans-serif; font-weight:700; font-size:clamp(.46rem,1.5vw,.62rem);
-    cursor:pointer; background:linear-gradient(160deg,#fefefe,#d8d8da); color:#2b2b2e;
-    box-shadow:0 4px 9px rgba(0,0,0,.4), inset 0 -2px 3px rgba(0,0,0,.15);
-    transition:transform .15s ease; letter-spacing:.3px;
-  }
+  border:none; border-radius:9px; padding:9% 3%;
+  font-family:'Quicksand',sans-serif; font-weight:700; font-size:clamp(.46rem,1.5vw,.62rem);
+  cursor:pointer; background:linear-gradient(160deg,#fefefe,#d8d8da); color:#2b2b2e;
+  box-shadow:0 4px 9px rgba(0,0,0,.4), inset 0 -2px 3px rgba(0,0,0,.15);
+  transition:transform .15s ease; letter-spacing:.3px;
+}
+#offBtn{
+  aspect-ratio:1/1;
+  width:78%;
+  margin:0 auto;
+  border-radius:50%;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.05;
+  background:linear-gradient(160deg,#ffd3df,#e8607d);
+  color:#fff;
+  font-size:clamp(.42rem,1.3vw,.56rem);
+}
   .ctrl-btn:hover{ transform:translateY(-2px); }
   .ctrl-btn:active{ transform:translateY(1px); }
   .ctrl-btn.next-btn,
@@ -307,7 +320,7 @@
   <div class="header">
     <div class="eyebrow">a little something, just for you</div>
     <h1>Happy 26th Birthday</h1>
-    <p>One camera, five memories, a wide world still waiting to be photographed by you. Press the shutter when you're ready.</p>
+    <p>A wide world still waiting to be photographed by you. Press the shutter when you're ready.</p>
   </div>
 
   <div class="camera-zone">
@@ -401,8 +414,7 @@
                 <div class="film-caption" id="photoCaption">caption</div>
               </div>
               <div class="card-frame" id="cardFrame">
-                <h3>For You, On Your Day</h3>
-                <p>26 trips around the sun, and you've made every one beautiful. Here's to views still unseen. I love you.</p>
+                <img id="cardImg",  src = "/Users/maneeshmurali/Documents/ammutty/img6.png", alt="birthday card">
               </div>
             </div>
 
@@ -433,15 +445,15 @@
 <script>
 (function(){
   const photos = [
-    { src: "https://placehold.co/480x640/e8a37a/3a2a20?text=Photo+1", caption: "The day you finally got the sunrise shot you'd been chasing for three days straight." },
-    { src: "https://placehold.co/480x640/8fbf9e/233a2a?text=Photo+2", caption: "Lost in a tiny street in a city we couldn't even pronounce. My favourite kind of lost." },
-    { src: "https://placehold.co/480x640/7fa8c9/1f2f3d?text=Photo+3", caption: "You, the mountains, and a backpack heavier than your suitcase. Still smiling." },
-    { src: "https://placehold.co/480x640/d3a6c9/3a2435?text=Photo+4", caption: "That golden-hour photo you took of a stranger's dog and somehow made it art." },
-    { src: "https://placehold.co/480x640/e6c75a/3a2f10?text=Photo+5", caption: "The moment you put the camera down for once and just looked at the view. I took this one." }
+    { src: "/Users/maneeshmurali/Documents/ammutty/img1.jpeg", caption: "Remember this one, One monday you send wishing good morning! It was the first time I actually saw you after 2020" },
+    { src: "/Users/maneeshmurali/Documents/ammutty/img2.jpeg", caption: "One of my favourites. Makes me feel you are looking right into my eyes! Hallucinating one!!" },
+    { src: "/Users/maneeshmurali/Documents/ammutty/img3.jpeg", caption: "This one always give me the fun & creative architect vibes!!" },
+    { src: "/Users/maneeshmurali/Documents/ammutty/img4.jpeg", caption: "You and your black dress. This one here takes me back to that Little Ammu I saw during childhood days." },
+    { src: "/Users/maneeshmurali/Documents/ammutty/img5.jpeg", caption: "This got to be the special one. I think this might have triggered few future events!!" }
   ];
 
-  const card = { type: "card" };
-  const video = { type: "video", src: "" };
+  const card = { type: "card"};
+  const video = { type: "video", src: "/Users/maneeshmurali/Documents/ammutty/ammu.mov" };
 
   const sequence = [...photos, card, video];
   const total = sequence.length;
@@ -532,7 +544,7 @@
       camera.classList.add('flipped');
       index = 0;
       setTimeout(renderCurrent, 650);
-      hint.textContent = "use NEXT to flip through the memories, C VIEW to read the story";
+      hint.textContent = "C VIEW has a story for you";
     }, 320);
   }
 
@@ -571,7 +583,7 @@
     const item = sequence[index];
     let text = "";
     if (item.type === 'video') {
-      text = "I made this so that, years from now, you can press play and remember exactly how this felt.";
+      text = "The only video I shot on our outing, it was fun watching you do pottery and Those beautiful curls clipped up!";
     } else {
       text = item.caption;
     }
