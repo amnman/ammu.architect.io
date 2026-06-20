@@ -109,8 +109,8 @@
   .face-back{ transform:rotateY(180deg); display:flex; align-items:center; justify-content:center; }
   .back-stage{ position:relative; width:100%; height:100%; }
   .photo-screen{
-    position:absolute; left:13.3%; top:12.5%; width:56.7%; height:62.5%;
-    background:#101012; border-radius:10px;
+    position:absolute; left:6.7%; top:7.5%; width:70%; height:75%;
+    background:#101012; border-radius:9px;
     box-shadow:inset 0 0 0 4px #0a0a0c, inset 0 0 18px rgba(0,0,0,.8);
     overflow:hidden;
   }
@@ -135,7 +135,7 @@
   .card-frame h3{ font-family:'Playfair Display',serif; font-style:italic; color:var(--rose); margin:0 0 4px; font-size:.7rem; }
   .card-frame p{ font-family:'Caveat',cursive; font-size:.6rem; color:#5a4444; margin:0; line-height:1.25; }
 
-  .controls-col{ position:absolute; left:72%; top:13%; width:22%; height:61%; display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:8%; }
+  .controls-col{ position:absolute; left:79%; top:7.5%; width:17%; height:75%; display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:10%; }
   .ctrl-btn{
     border:none; border-radius:9px; padding:9% 3%;
     font-family:'Quicksand',sans-serif; font-weight:700; font-size:clamp(.46rem,1.5vw,.62rem);
@@ -145,16 +145,29 @@
   }
   .ctrl-btn:hover{ transform:translateY(-2px); }
   .ctrl-btn:active{ transform:translateY(1px); }
+  .ctrl-btn.next-btn,
+  .ctrl-btn.cview-btn{
+    aspect-ratio:1/1;
+    width:78%;
+    margin:0 auto;
+    border-radius:50%;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.05;
+  }
   .ctrl-btn.next-btn{ background:linear-gradient(160deg,#fff4d6,var(--gold)); color:#4a330b; }
-  .ctrl-btn.cview-btn{ background:linear-gradient(160deg,#d9f5ee,var(--mint)); color:#0d4f44; }
+  .ctrl-btn.cview-btn{ background:linear-gradient(160deg,#d9f5ee,var(--mint)); color:#0d4f44; font-size:clamp(.42rem,1.3vw,.56rem); }
   .ctrl-btn:disabled{ opacity:.4; cursor:not-allowed; transform:none; }
-  .counter{ font-family:'Caveat',cursive; font-size:.7rem; color:#3a2f2f; text-align:center; background:rgba(255,255,255,.65); border-radius:8px; padding:4% 0; }
+  .counter{ display:none; }
 
   .cview-pop{
-    position:absolute; left:13.3%; top:77%; width:56.7%;
-    background:var(--film-frame); border-radius:10px; padding:6% 6%;
+    position:absolute; left:6.7%; top:85%; width:70%;
+    background:var(--film-frame); border-radius:10px; padding:5% 6%;
     box-shadow:0 12px 26px rgba(0,0,0,.5);
-    font-family:'Caveat',cursive; font-size:.68rem; color:#4a3a30; text-align:center;
+    font-family:'Caveat',cursive; font-size:.62rem; color:#4a3a30; text-align:center;
     opacity:0; transform:translateY(6px); pointer-events:none;
     transition:opacity .3s ease, transform .3s ease; z-index:50;
   }
@@ -371,11 +384,11 @@
               </defs>
               <rect x="8" y="8" width="284" height="284" rx="46" fill="url(#bodyPinkBack)" stroke="#d9728f" stroke-width="3"/>
               <!-- film door -->
-              <rect x="40" y="40" width="170" height="200" rx="18" fill="#fdf5f7" stroke="#d9728f" stroke-width="3"/>
+              <rect x="20" y="24" width="210" height="240" rx="16" fill="#fdf5f7" stroke="#d9728f" stroke-width="3"/>
               <!-- hinge dot -->
-              <circle cx="222" cy="58" r="7" fill="none" stroke="#d9728f" stroke-width="3"/>
+              <circle cx="246" cy="40" r="7" fill="none" stroke="#d9728f" stroke-width="3"/>
               <!-- brand -->
-              <text x="225" y="200" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="13" fill="#9c3f5c" letter-spacing="1" transform="rotate(90 225 200)">instax mini</text>
+              <text x="258" y="200" text-anchor="middle" font-family="Quicksand, sans-serif" font-weight="700" font-size="12" fill="#9c3f5c" letter-spacing="1" transform="rotate(90 258 200)">instax mini</text>
               <!-- feet -->
               <rect x="50" y="262" width="26" height="10" rx="4" fill="#d9728f" opacity=".5"/>
               <rect x="224" y="262" width="26" height="10" rx="4" fill="#d9728f" opacity=".5"/>
@@ -394,7 +407,7 @@
             </div>
 
             <div class="controls-col">
-              <div class="counter" id="counter" hidden>1 / 7</div>
+              <div class="counter" id="counter">1 / 7</div>
               <button class="ctrl-btn next-btn" id="nextBtn">NEXT ▸</button>
               <button class="ctrl-btn cview-btn" id="cviewBtn">C VIEW</button>
               <button class="ctrl-btn" id="offBtn" style="display:none;">TURN OFF ⏻</button>
@@ -407,7 +420,6 @@
       </div>
     </div>
 
-    <div class="progress-dots" id="dots"></div>
     <div class="hint" id="hint">tap the shutter button to begin ↑</div>
   </div>
 
@@ -448,20 +460,9 @@
   const counter = document.getElementById('counter');
   const cviewPop = document.getElementById('cviewPop');
   const hint = document.getElementById('hint');
-  const dotsWrap = document.getElementById('dots');
   const helloOverlay = document.getElementById('helloOverlay');
 
-  for (let i = 0; i < total; i++) {
-    const d = document.createElement('span');
-    dotsWrap.appendChild(d);
-  }
-
-  function updateDots(){
-    const dots = dotsWrap.children;
-    for (let i=0;i<dots.length;i++){
-      dots[i].classList.toggle('active', i === index);
-    }
-  }
+  function updateDots(){}
 
   function flashScreen(cb){
     screenFlash.classList.remove('fire');
